@@ -1,0 +1,67 @@
+<div class="card p-3">
+
+  <!-- Filter -->
+  <div class="row mb-3">
+    <!-- Category Select -->
+    <div class="col-md-3 mb-2">
+      <select class="form-select" [(ngModel)]="selectedCategory" (change)="changeCategory($event)">
+        <option value="">All Categories</option>
+        <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+      </select>
+    </div>
+
+    <!-- Search Input -->
+    <div class="col-md-9 mb-2">
+      <input class="form-control" 
+             type="text" 
+             placeholder="Search product..." 
+             [(ngModel)]="searchTerm" 
+             (keyup)="loadProducts()" />
+    </div>
+
+    <div class="col-12"><hr></div>
+  </div>
+
+  <!-- Products Grid -->
+  <div class="row g-3">
+    <ng-container *ngFor="let product of products; let i = index">
+      <div class="col-md-3">
+        <div class="card h-100 shadow-sm">
+          <img class="card-img-top" 
+               [src]="product.imageUrl || 'assets/no-image.png'" 
+               [alt]="product.title" />
+          <div class="card-body">
+            <h6 class="card-title">{{ product.title }}</h6>
+            <p class="card-text">{{ product.price | currency:'SAR' }}</p>
+            <small class="text-muted">{{ product.category }}</small>
+          </div>
+          <div class="card-footer">
+            <button *ngIf="getQuantity(product) === 0; else quantityControls"
+                    (click)="addToCart(product)"
+                    class="btn btn-primary w-100">
+              Add to Cart
+            </button>
+
+            <ng-template #quantityControls>
+              <div class="d-flex align-items-center justify-content-between">
+                <button (click)="removeFromCart(product)" class="btn btn-outline-secondary">
+                  <i class="bi bi-dash-lg"></i>
+                </button>
+                <span>{{ getQuantity(product) }} in cart</span>
+                <button (click)="addToCart(product)" class="btn btn-outline-secondary">
+                  <i class="bi bi-plus-lg"></i>
+                </button>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="(i + 1) % 4 === 0" class="w-100"></div>
+    </ng-container>
+
+    <div *ngIf="products.length === 0" class="col-12 text-center py-5">
+      <h5 class="text-muted">No products found.</h5>
+    </div>
+  </div>
+</div>

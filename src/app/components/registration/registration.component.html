@@ -1,0 +1,113 @@
+<div class="card componentStyle">
+  <section>
+    <div class="container-fluid h-custom">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+
+        <!-- Left Image -->
+        <div class="col-md-9 col-lg-6 col-xl-5">
+          <img src="assets/login-register-bg.png" class="img-fluid" alt="Sample image" />
+        </div>
+
+        <!-- Registration Form -->
+        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 shadow"
+             style="margin: 2rem; padding: 30px; border-radius: 10px;">
+          <form #f="ngForm" (ngSubmit)="registerAccount()" class="form-signin" novalidate>
+            <h1 class="h3 mb-3 font-weight-normal text-center">Sign Up</h1>
+
+            <!-- Email -->
+            <input
+              name="email"
+              [(ngModel)]="userDetail.email"
+              type="email"
+              id="inputEmail"
+              class="form-control mb-3"
+              placeholder="Email address"
+              required
+            />
+            <div *ngIf="f.submitted && !userDetail.email" class="text-danger mb-2">
+              Email is required
+            </div>
+
+            <!-- First Name -->
+            <input
+              name="firstName"
+              [(ngModel)]="userDetail.firstName"
+              type="text"
+              id="inputFirstName"
+              class="form-control mb-3"
+              placeholder="First Name"
+              required
+            />
+            <div *ngIf="f.submitted && !userDetail.firstName" class="text-danger mb-2">
+              First Name is required
+            </div>
+
+            <!-- Last Name -->
+            <input
+              name="lastName"
+              [(ngModel)]="userDetail.lastName"
+              type="text"
+              id="inputLastName"
+              class="form-control mb-3"
+              placeholder="Last Name"
+            />
+
+            <!-- Display Name -->
+            <input
+              name="displayName"
+              [(ngModel)]="userDetail.displayName"
+              type="text"
+              id="inputDisplayName"
+              class="form-control mb-3"
+              placeholder="Display Name"
+              required
+            />
+            <div *ngIf="f.submitted && !userDetail.displayName" class="text-danger mb-2">
+              Display Name is required
+            </div>
+
+            <!-- Password -->
+            <input
+              name="password"
+              [(ngModel)]="userDetail.password"
+              type="password"
+              id="inputPassword"
+              class="form-control mb-3"
+              placeholder="Password"
+              required
+            />
+            <div *ngIf="f.submitted && !userDetail.password" class="text-danger mb-2">
+              Password is required
+            </div>
+
+            <!-- Submit Button -->
+            <div class="row" style="--bs-gutter-x: 0;">
+              <button class="btn btn-primary fw-bold w-100" type="submit" [disabled]="!f.valid">
+                REGISTER
+              </button>
+            </div>
+
+            <!-- Login Link -->
+            <p class="text-center mt-3 text-secondary">
+              Already have an account? <a routerLink="/login">Login</a> now.
+            </p>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-footer">
+    <div class="text-white mb-3 mb-md-0">
+      Copyright © 2023. All rights reserved.
+    </div>
+    <div>
+      <a href="#!" class="text-white me-4"><i class="bi bi-facebook"></i></a>
+      <a href="#!" class="text-white me-4"><i class="bi bi-twitter"></i></a>
+      <a href="#!" class="text-white me-4"><i class="bi bi-google"></i></a>
+      <a href="#!" class="text-white"><i class="bi bi-linkedin"></i></a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<div class="container mt-4">
+
+  <h3 class="mb-4 text-center">My Dashboard</h3>
+
+  <!-- Loader -->
+  <div *ngIf="!loader" class="text-center mt-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p>Loading chart data...</p>
+  </div>
+
+  <!-- Charts -->
+  <div *ngIf="loader && saleProductDataInput?.data?.length > 0">
+
+    <div class="row">
+      <!-- Donut Chart -->
+      <div class="col-md-6 mb-4">
+        <div class="card text-center">
+          <div class="card-header">Product Usage - Donut Chart</div>
+          <div class="card-body">
+            <donut-chart
+  [donutChartInput]="saleProductData"
+  [keys]="{ x: 'name', y: 'value' }"
+  [loading]="loader"
+  noDataMessage="No data found!">
+</donut-chart>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pie Chart -->
+      <div class="col-md-6 mb-4">
+        <div class="card text-center">
+          <div class="card-header">Product Usage - Pie Chart</div>
+          <div class="card-body">
+           <pie-chart
+  [pieChartInput]="saleProductData"
+  [keys]="{ x: 'name', y: 'value' }"
+  [loading]="loader"
+  noDataMessage="No data found!">
+</pie-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bar Chart -->
+    <div class="card mb-3 text-center">
+      <div class="card-header">Product Usage - Bar Chart</div>
+      <div class="card-body">
+        <bar-chart
+          [barChartInput]="saleProductDataInput"
+          [keys]="{ x: 'name', y: 'value' }"
+          [loading]="loader"
+          noDataMessage="No data found!">
+        </bar-chart>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- No Data Message -->
+  <div *ngIf="loader && (!saleProductDataInput?.data || saleProductDataInput.data.length === 0)" class="alert alert-warning text-center mt-4">
+    No data found!
+  </div>
+
+</div>

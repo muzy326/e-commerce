@@ -1,0 +1,79 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
+  <div class="container">
+
+    <!-- BRAND -->
+    <a class="navbar-brand" routerLink="/products" [class.a-disabled]="!displayName">
+      <img height="25" src="assets/shopping-bag.png" alt="Logo">
+    </a>
+
+    <!-- MOBILE TOGGLE -->
+    <button class="navbar-toggler" type="button" (click)="mobileMenuOpen = !mobileMenuOpen">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- NAV CONTENT -->
+    <div class="collapse navbar-collapse" [class.show]="mobileMenuOpen">
+      <ul class="navbar-nav ms-auto align-items-center">
+
+        <!-- CART -->
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/shopping-cart" [class.a-disabled]="!displayName">
+            <i class="bi bi-cart-fill"></i>
+            <span class="badge rounded-pill bg-warning text-dark ms-1">
+              {{ totalItems }}
+            </span>
+          </a>
+        </li>
+
+        <!-- USER DROPDOWN -->
+        <li *ngIf="displayName" class="nav-item dropdown" [class.show]="dropdownOpen">
+          <a class="nav-link dropdown-toggle" role="button" (click)="toggleDropdown()">
+            {{ displayName }}
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-end" [class.show]="dropdownOpen">
+            <li>
+              <a class="dropdown-item" routerLink="/my-orders" (click)="closeDropdown()">My Orders</a>
+            </li>
+           
+            <li>
+              <a class="dropdown-item" routerLink="/my-dashboard" (click)="closeDropdown()">My Dashboard</a>
+            </li>
+
+            <!-- ADMIN MENU -->
+            <ng-container *ngIf="isAdmin">
+              <li><hr class="dropdown-divider"></li>
+
+              <li>
+                <a class="dropdown-item" routerLink="/admin/orders" (click)="closeDropdown()">Admin Orders</a>
+              </li>
+              <li>
+                <a class="dropdown-item" routerLink="/admin/categories" (click)="closeDropdown()">Admin Categories</a>
+              </li>
+              <li>
+                <a class="dropdown-item" routerLink="/admin/products" (click)="closeDropdown()">Admin Products</a>
+              </li>
+              <li>
+                <a class="dropdown-item" routerLink="/admin/dashboard" (click)="closeDropdown()">Admin Dashboard</a>
+              </li>
+            </ng-container>
+
+            <li><hr class="dropdown-divider"></li>
+
+            <li>
+              <a class="dropdown-item" style="cursor:pointer" (click)="logout(); closeDropdown()">
+                Log Out
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- LOGIN BUTTON -->
+        <li *ngIf="!displayName" class="nav-item">
+          <a class="nav-link" routerLink="/login">Login</a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>

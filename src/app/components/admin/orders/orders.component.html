@@ -1,0 +1,77 @@
+<div class="card componentStyle">
+
+  <!-- Place Order Button -->
+  <div class="row">
+    <div class="col-md-12 text-end mb-3 mt-3 me-3">
+      <a routerLink="/products" class="btn btn-primary">
+        <i class="bi bi-cart-check-fill"></i> Place Order
+      </a>
+    </div>
+  </div>
+
+  <!-- Orders Table -->
+  <div class="mx-3 mb-3">
+    <div class="card">
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead class="bg-light">
+            <tr>
+              <th>Customer</th>
+              <th>Date</th>
+              <th>Amount</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let order of adminOrders | slice:(page-1)*pageSize : page*pageSize">
+
+              <td>{{ order.shippingDetails.name }}</td>
+
+              <td>
+                {{ order.datePlaced ? (order.datePlaced | date:'shortDate') : '-' }}
+              </td>
+
+              <td>
+                {{ order.amount ? (order.amount | currency:'INR') : '-' }}
+              </td>
+
+              <td>
+                <a [routerLink]="['/order-detail', order.id]"
+                   [queryParams]="{ viewFrom: 'admin' }">
+                   View
+                </a>
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="d-flex justify-content-between p-2 align-items-center">
+
+        <ngb-pagination
+          [(page)]="page"
+          [pageSize]="pageSize"
+          [collectionSize]="adminOrders.length">
+        </ngb-pagination>
+
+        <select
+          class="form-select"
+          style="width:auto; height:40px;"
+          [(ngModel)]="pageSize"
+          name="pageSize">
+
+          <option [ngValue]="2">2 items per page</option>
+          <option [ngValue]="4">4 items per page</option>
+          <option [ngValue]="6">6 items per page</option>
+
+        </select>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>

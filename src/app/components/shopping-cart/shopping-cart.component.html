@@ -1,0 +1,61 @@
+<div class="card shadow-sm m-3">
+
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h4 class="mb-0">Shopping Cart</h4>
+    <a *ngIf="totalItems === 0" routerLink="/products" class="btn btn-primary btn-sm">
+      Add Items
+    </a>
+  </div>
+
+  <div *ngIf="totalItems > 0; else emptyCart">
+    <div class="table-responsive">
+      <table class="table align-middle text-center mb-0">
+        <thead class="table-light">
+          <tr>
+            <th></th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let item of cartItems">
+            <td>
+              <img [src]="item.imageUrl" width="50" class="rounded">
+            </td>
+            <td>{{ item.title }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-secondary"
+                      (click)="remove(item)">−</button>
+              <span class="mx-2">{{ item.quantity }}</span>
+              <button class="btn btn-sm btn-outline-secondary"
+                      (click)="add(item)">+</button>
+            </td>
+            <td>{{ item.totalPrice | currency:'SAR' }}</td>
+          </tr>
+        </tbody>
+
+        <tfoot class="table-light">
+          <tr>
+            <th colspan="3" class="text-end">Total</th>
+            <th>{{ totalPrice | currency:'SAR' }}</th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="p-3 d-flex justify-content-between">
+      <button class="btn btn-outline-danger btn-sm" (click)="clear()">Clear</button>
+      <button class="btn btn-primary btn-sm" (click)="checkout()">Checkout</button>
+    </div>
+  </div>
+
+  <ng-template #emptyCart>
+    <div class="p-5 text-center text-muted">
+      <h5>Your cart is empty</h5>
+      <a routerLink="/products" class="btn btn-primary mt-3">Browse Products</a>
+    </div>
+  </ng-template>
+
+</div>

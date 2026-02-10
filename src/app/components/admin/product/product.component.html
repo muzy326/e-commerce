@@ -1,0 +1,100 @@
+<div class="card componentStyle">
+
+  <!-- New Product Button -->
+  <div class="row">
+    <div class="col-md-12 text-end mt-3 mb-3 me-3">
+      <button
+        class="btn btn-primary"
+        (click)="addProduct()"
+        data-bs-toggle="modal"
+        data-bs-target="#productModal">
+        New Product
+      </button>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <div class="mx-3 mb-3">
+    <input
+      class="form-control"
+      type="text"
+      placeholder="Search product..."
+      [(ngModel)]="searchTerm"
+      (keyup)="filterData()">
+  </div>
+
+  <!-- Product Table -->
+  <div class="mx-3 mb-3">
+    <div class="card">
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead class="bg-light">
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Action(s)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of filteredProducts | slice:(page-1)*pageSize : page*pageSize">
+              <td><img [src]="product.imageUrl" width="30" height="30" class="rounded-circle"></td>
+              <td>{{ product.title }}</td>
+              <td>{{ product.category }}</td>
+              <td>{{ product.price | currency:'SAR' }}</td>
+              <td>
+                <button class="btn btn-secondary" (click)="editProduct(product)" data-bs-toggle="modal" data-bs-target="#productModal">
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+                <button class="btn btn-danger" (click)="deleteProduct(product.id!)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="d-flex justify-content-between p-2">
+        <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="filteredProducts.length"></ngb-pagination>
+        <select class="form-select" style="width:auto" [(ngModel)]="pageSize">
+          <option [ngValue]="2">2 items</option>
+          <option [ngValue]="4">4 items</option>
+          <option [ngValue]="6">6 items</option>
+        </select>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Product Modal -->
+  <div class="modal fade" id="productModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ modalHeader }}</h5>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          <form [formGroup]="productForm">
+            <input formControlName="title" class="form-control mb-3" placeholder="Enter title">
+            <input type="number" formControlName="price" class="form-control mb-3" placeholder="Enter price">
+            <select formControlName="category" class="form-select mb-3">
+              <option *ngFor="let c of categories" [value]="c.name">{{ c.name }}</option>
+            </select>
+            <input formControlName="imageUrl" class="form-control mb-3" placeholder="Enter image URL">
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button class="btn btn-primary" (click)="saveProduct()" [disabled]="productForm.invalid">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,62 @@
+<div class="card componentStyle p-3">
+
+  <!-- Header -->
+  <div class="row p-3 align-items-center">
+    <div class="col-6">
+      <h2>Order Details</h2>
+    </div>
+    <div class="col-6 text-end">
+      <p style="font-weight: bold; margin-top:6px">
+        Date : {{ orderDetail.datePlaced | date:'medium' }}
+      </p>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class="col-6 border-line">
+      <div class="form-group">
+        <label>Name</label>
+        <input name="name" disabled [value]="orderDetail.shippingDetails.name" type="text" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Address</label>
+        <input disabled name="addressLine1" [value]="orderDetail.shippingDetails.addressLine1" type="text" class="form-control">
+      </div>
+      <div class="form-group">
+        <input disabled name="addressLine2" [value]="orderDetail.shippingDetails.addressLine2" type="text" class="form-control" placeholder="Line 2">
+      </div>
+      <div class="form-group">
+        <label>City</label>
+        <input disabled name="city" [value]="orderDetail.shippingDetails.city" type="text" class="form-control">
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="card-body">
+        <h4 class="card-title">Order Summary</h4>
+        <ul class="list-group list-group-flush">
+          <li *ngFor="let item of orderDetail.items" class="list-group-item">
+            {{ item.quantity }} x {{ item.title }}
+            <div class="float-end">
+              {{ item.totalPrice | currency:'INR':'symbol' }}
+            </div>
+          </li>
+          <li class="list-group-item fw-bold">
+            Total
+            <div class="float-end">
+              {{ orderDetail.amount | currency:'INR':'symbol' }}
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+  <a (click)="redirectToOrdersPage()" class="btn btn-primary ripple-surface" style="min-width: 230px; text-align: center;">
+    <i class="bi bi-arrow-left-circle"></i> BACK TO ORDERS
+  </a>
+
+</div>

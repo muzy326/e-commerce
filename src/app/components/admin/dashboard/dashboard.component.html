@@ -1,0 +1,61 @@
+<div class="container mt-4">
+
+  <h3 class="mb-4">Admin Dashboard</h3>
+
+  <!-- Action Buttons -->
+  <div class="mb-3">
+    <a routerLink="/admin/products" class="btn btn-primary me-2">Manage Products</a>
+    <a routerLink="/admin/categories" class="btn btn-secondary me-2">Manage Categories</a>
+    <a routerLink="/admin/orders" class="btn btn-success">View Orders</a>
+  </div>
+
+  <!-- Charts Row -->
+  <div class="row">
+    <!-- Donut Chart -->
+    <div class="col-md-6">
+      <div class="card text-center mb-3">
+        <div class="card-header">Product Usage - Donut Chart</div>
+        <div class="card-body">
+          <donut-chart
+            [donutChartInput]="saleProductData"
+            [keys]="{ x: 'name', y: 'value' }"
+            [loading]="loader"
+            [customTitle]="'Donut Chart'"
+            [noDataText]="'No product data found!'">
+          </donut-chart>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pie Chart -->
+    <div class="col-md-6">
+      <div class="card text-center mb-3">
+        <div class="card-header">Product Usage - Pie Chart</div>
+        <div class="card-body">
+          <pie-chart
+            [pieChartInput]="saleProductData"
+            [keys]="{ x: 'name', y: 'value' }"
+            [loading]="loader"
+            [customTitle]="'Pie Chart'"
+            [noDataText]="'No product data found!'">
+          </pie-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bar Chart -->
+  <div class="card text-center mb-3">
+    <div class="card-header">Product Usage - Bar Chart</div>
+    <div class="card-body">
+      <bar-chart
+        [barChartInput]="saleProductDataInput"
+        [keys]="{ x: 'name', y: 'value' }"
+        [loading]="loader"
+        [customTitle]="'Bar Chart'"
+        [noDataText]="'No product data found!'">
+      </bar-chart>
+    </div>
+  </div>
+
+</div>

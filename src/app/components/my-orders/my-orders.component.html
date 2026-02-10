@@ -1,0 +1,53 @@
+
+<div class="card componentStyle">
+    <div class="row">
+        <div class="col-md-12">
+            <div style="text-align: right;margin-right: 1rem !important; " class="mb-3 mt-3">
+                <a routerLink="/products" class="btn btn-primary"><i class="bi bi-cart-check-fill"></i> Place
+                    Order</a>
+            </div>
+        </div>
+    </div>
+    <div style="margin: 0rem 1rem 1rem 1rem !important;">
+        <div class="col-12">
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table  mb-0">
+                        <thead class="thead-light">
+                            <tr class="bg-light ">
+                                <th>Customer</th>
+                                <th>Date</th>
+                                <th sortable="amount">Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="customtable">
+                            <tr
+                                *ngFor="let order of myOrders  | slice: (page-1) * pageSize : page * pageSize; index as ItemIndex">
+                                <td>{{order.shippingDetails.name}}</td>
+                                <td>{{order.datePlaced | date:'short'}}</td>
+                                <td>{{order.amount | currency:'SAR':'symbol'}}</td>
+                                <td><a [queryParams]="{ viewFrom: 'user'}"
+                                        [routerLink]="['/order-detail', order.id]">View</a></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <div class="d-flex justify-content-between p-2">
+                                        <ngb-pagination [(page)]="page" [pageSize]="pageSize"
+                                            [collectionSize]="myOrders.length"></ngb-pagination>
+                                        <select class="custom-select" style="width: auto;height: 40px;" name="pageSize"
+                                            [(ngModel)]="pageSize">
+                                            <option [ngValue]="2">2 items per page</option>
+                                            <option [ngValue]="4">4 items per page</option>
+                                            <option [ngValue]="6">6 items per page</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

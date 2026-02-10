@@ -1,0 +1,98 @@
+<div class="card componentStyle">
+  <div class="m-3">
+    <h2>Shipping</h2>
+    <hr>
+
+    <div class="row">
+      <!-- SHIPPING FORM -->
+      <div class="col-md-6">
+        <form #f="ngForm" (ngSubmit)="placeOrder(f)">
+
+          <div class="mb-3">
+            <input
+              name="name"
+              [(ngModel)]="shipping.name"
+              type="text"
+              class="form-control"
+              placeholder="Name"
+              required>
+          </div>
+
+          <div class="mb-3">
+            <input
+              name="addressLine1"
+              [(ngModel)]="shipping.addressLine1"
+              type="text"
+              class="form-control"
+              placeholder="Address Line 1"
+              required>
+          </div>
+
+          <div class="mb-3">
+            <input
+              name="addressLine2"
+              [(ngModel)]="shipping.addressLine2"
+              type="text"
+              class="form-control"
+              placeholder="Address Line 2">
+          </div>
+
+          <div class="mb-3">
+            <input
+              name="city"
+              [(ngModel)]="shipping.city"
+              type="text"
+              class="form-control"
+              placeholder="City"
+              required>
+          </div>
+
+          <hr>
+
+          <button
+            type="submit"
+            class="btn btn-primary w-100"
+            [disabled]="f.invalid">
+            <i class="bi bi-cart-check-fill"></i>
+            Place Order
+          </button>
+
+        </form>
+      </div>
+
+      <!-- ORDER SUMMARY -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+
+            <h4 class="card-title">Order Summary</h4>
+
+            <p class="card-text">
+              You have {{ totalItems }} items in your shopping cart.
+            </p>
+
+            <ul class="list-group list-group-flush">
+              <li
+                *ngFor="let item of cartItems"
+                class="list-group-item d-flex justify-content-between">
+                {{ item.quantity }} × {{ item.title }}
+                <span>
+                  {{ item.totalPrice | currency:'INR':'symbol' }}
+                </span>
+              </li>
+
+              <li class="list-group-item fw-bold d-flex justify-content-between">
+                Total
+                <span>
+                  {{ totalPrice | currency:'INR':'symbol' }}
+                </span>
+              </li>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
