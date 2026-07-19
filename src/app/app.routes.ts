@@ -15,6 +15,7 @@ import { AdminDashboardComponent } from './components/admin/dashboard/dashboard.
 import { AdminCategoryComponent } from './components/admin/category/category.component';
 import { AdminProductComponent } from './components/admin/product/product.component';
 import { AdminOrdersComponent } from './components/admin/orders/orders.component';
+import { adminGuard } from './guards/admin.guard';
 
 
 
@@ -34,12 +35,34 @@ export const routes: Routes = [
   { path: 'order-detail/:id', component: OrderDetailComponent},
   { path: 'order-success', component: OrderSuccessComponent},
   { path: 'shopping-cart', component: ShoppingCartComponent},
+  {
+  path: 'forgot-password',
+  loadComponent: () =>
+    import('./pages/forgot-password/forgot-password.component')
+      .then(m => m.ForgotPasswordComponent)
+},
 
   // Admin routes (must be admin)
-  { path: 'admin/dashboard', component: AdminDashboardComponent},
-  { path: 'admin/categories', component: AdminCategoryComponent},
-  { path: 'admin/products', component: AdminProductComponent},
-  { path: 'admin/orders', component: AdminOrdersComponent},
+  {
+  path: 'admin/dashboard',
+  component: AdminDashboardComponent,
+  canActivate: [adminGuard]
+},
+{
+  path: 'admin/categories',
+  component: AdminCategoryComponent,
+  canActivate: [adminGuard]
+},
+{
+  path: 'admin/products',
+  component: AdminProductComponent,
+  canActivate: [adminGuard]
+},
+{
+  path: 'admin/orders',
+  component: AdminOrdersComponent,
+  canActivate: [adminGuard]
+},
 
   // Catch-all route → redirect to login
   { path: '**', redirectTo: '/login', pathMatch: 'full' }

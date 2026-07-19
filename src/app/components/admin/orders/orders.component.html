@@ -1,55 +1,164 @@
 <div class="card componentStyle">
 
-  <!-- Place Order Button -->
+  <!-- Header -->
   <div class="row">
-    <div class="col-md-12 text-end mb-3 mt-3 me-3">
+    <div class="col-md-6">
+      <h3 class="m-3">
+        <i class="bi bi-bag-check-fill"></i>
+        Manage Orders
+      </h3>
+    </div>
+
+    <div class="col-md-6 text-end mb-3 mt-3 pe-3">
       <a routerLink="/products" class="btn btn-primary">
-        <i class="bi bi-cart-check-fill"></i> Place Order
+        <i class="bi bi-cart-check-fill"></i>
+        Place Order
       </a>
     </div>
   </div>
 
   <!-- Orders Table -->
   <div class="mx-3 mb-3">
+
     <div class="card">
+
       <div class="table-responsive">
-        <table class="table mb-0">
-          <thead class="bg-light">
+
+        <table class="table table-hover mb-0">
+
+          <thead class="table-light">
+
             <tr>
+
               <th>Customer</th>
+
               <th>Date</th>
+
               <th>Amount</th>
-              <th>Action</th>
+
+              <th>Status</th>
+
+              <th class="text-center">Actions</th>
+
             </tr>
+
           </thead>
 
           <tbody>
-            <tr *ngFor="let order of adminOrders | slice:(page-1)*pageSize : page*pageSize">
 
-              <td>{{ order.shippingDetails.name }}</td>
+            <tr
+              *ngFor="let order of adminOrders | slice:(page-1)*pageSize : page*pageSize">
 
+              <!-- Customer -->
               <td>
-                {{ order.datePlaced ? (order.datePlaced | date:'shortDate') : '-' }}
+                {{ order.shippingDetails.name }}
               </td>
 
+              <!-- Date -->
               <td>
-                {{ order.amount ? (order.amount | currency:'INR') : '-' }}
+                {{ order.datePlaced | date:'short' }}
               </td>
 
+              <!-- Amount -->
               <td>
-                <a [routerLink]="['/order-detail', order.id]"
-                   [queryParams]="{ viewFrom: 'admin' }">
-                   View
-                </a>
+                {{ order.amount | currency:'INR':'symbol' }}
+              </td>
+
+              <!-- Status -->
+              <td>
+
+                <span
+                  *ngIf="order.status === 'Pending'"
+                  class="badge bg-warning text-dark">
+
+                  Pending
+
+                </span>
+
+                <span
+                  *ngIf="order.status === 'Shipped'"
+                  class="badge bg-primary">
+
+                  Shipped
+
+                </span>
+
+                <span
+                  *ngIf="order.status === 'Delivered'"
+                  class="badge bg-success">
+
+                  Delivered
+
+                </span>
+
+                <span
+                  *ngIf="order.status === 'Cancelled'"
+                  class="badge bg-danger">
+
+                  Cancelled
+
+                </span>
+
+              </td>
+
+              <!-- Actions -->
+              <td class="text-center">
+
+                <!-- View -->
+                <button
+                  class="btn btn-sm btn-info me-1"
+                  (click)="viewOrder(order)"
+                  title="View">
+
+                  <i class="bi bi-eye-fill"></i>
+
+                </button>
+
+                <!-- Ship -->
+                <button
+                  *ngIf="order.status === 'Pending'"
+                  class="btn btn-sm btn-warning me-1"
+                  (click)="updateOrderStatus(order, 'Shipped')"
+                  title="Ship Order">
+
+                  <i class="bi bi-truck"></i>
+
+                </button>
+
+                <!-- Deliver -->
+                <button
+                  *ngIf="order.status === 'Shipped'"
+                  class="btn btn-sm btn-success me-1"
+                  (click)="updateOrderStatus(order, 'Delivered')"
+                  title="Deliver Order">
+
+                  <i class="bi bi-check-circle-fill"></i>
+
+                </button>
+
+                <!-- Cancel -->
+                <button
+                  *ngIf="order.status !== 'Delivered' && order.status !== 'Cancelled'"
+                  class="btn btn-sm btn-danger"
+                  (click)="cancelOrder(order)"
+                  title="Cancel Order">
+
+                  <i class="bi bi-x-circle-fill"></i>
+
+                </button>
+
               </td>
 
             </tr>
+
           </tbody>
+
         </table>
+
       </div>
 
       <!-- Pagination -->
-      <div class="d-flex justify-content-between p-2 align-items-center">
+      <div class="d-flex justify-content-between align-items-center p-3">
 
         <ngb-pagination
           [(page)]="page"
@@ -59,9 +168,8 @@
 
         <select
           class="form-select"
-          style="width:auto; height:40px;"
-          [(ngModel)]="pageSize"
-          name="pageSize">
+          style="width:220px"
+          [(ngModel)]="pageSize">
 
           <option [ngValue]="2">2 items per page</option>
           <option [ngValue]="4">4 items per page</option>
@@ -72,6 +180,7 @@
       </div>
 
     </div>
+
   </div>
 
 </div>

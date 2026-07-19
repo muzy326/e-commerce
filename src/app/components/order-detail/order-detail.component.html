@@ -58,5 +58,18 @@
   <a (click)="redirectToOrdersPage()" class="btn btn-primary ripple-surface" style="min-width: 230px; text-align: center;">
     <i class="bi bi-arrow-left-circle"></i> BACK TO ORDERS
   </a>
+<button
+  *ngIf="
+    orderDetail.userId === loggedInUserId &&
+    !isAdmin &&
+    orderDetail.status !== 'Cancelled'
+  "
+  (click)="cancelOrder()"
+  class="btn btn-danger ms-3">
+
+  <i class="bi bi-x-circle"></i>
+  Cancel Order
+
+</button>
 
 </div>

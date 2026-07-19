@@ -1,63 +1,144 @@
 <div class="card componentStyle">
+
     <section>
+
         <div class="container-fluid h-custom">
+
             <div class="row d-flex justify-content-center align-items-center h-100">
+
                 <div class="col-md-9 col-lg-6 col-xl-5">
-                    <img src="assets/login-register-bg.png" class="img-fluid" alt="Sample image" />
+
+                    <img
+                        src="assets/login-register-bg.png"
+                        class="img-fluid"
+                        alt="Login">
+
                 </div>
-                <div style="margin: 3rem !important; padding: 30px; border-radius: 10px"
-                    class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 shadow">
-                    <form #f="ngForm" class="form-signin">
-                        <h1 class="h3 mb-3 font-weight-normal">LOGIN</h1>
 
-                        <input name="email" [(ngModel)]="userDetail.email" type="email" type="email" id="inputEmail"
-                            class="form-control mb-3" placeholder="Email address" required />
-                        <input name="password" [(ngModel)]="userDetail.password" type="password" id="inputPassword"
-                            class="form-control mb-3" placeholder="Password" required />
+                <div
+                    class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 shadow p-4 rounded">
 
-                        <div class="checkbox mb-3">
-                            <label>
-                                <input type="checkbox" value="remember-me" /> Remember me
-                            </label>
+                    <form
+                        #f="ngForm"
+                        (ngSubmit)="login(f)"
+                        novalidate>
+
+                        <h2 class="text-center mb-4">
+                            LOGIN
+                        </h2>
+
+                        <div class="mb-3">
+
+                            <input
+                                type="email"
+                                class="form-control"
+                                name="email"
+                                placeholder="Email Address"
+                                [(ngModel)]="userDetail.email"
+                                required
+                                email>
+
                         </div>
-                        <div style="--bs-gutter-x: 0 !important" class="row">
-                            <button (click)="login(f)" [disabled]="!f.valid" class="btn btn-primary fw-bold"
-                                type="submit">
-                                LOGIN
-                            </button>
+
+                        <div class="mb-3">
+
+                            <input
+                                type="password"
+                                class="form-control"
+                                name="password"
+                                placeholder="Password"
+                                [(ngModel)]="userDetail.password"
+                                required>
+
                         </div>
-                        <p class="text-center mt-3 text-secondary">
-                            If you don't have account, Please
-                            <a routerLink="/register">Register</a>
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+
+                            <div class="form-check">
+
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="remember">
+
+                                <label
+                                    class="form-check-label"
+                                    for="remember">
+
+                                    Remember Me
+
+                                </label>
+
+                            </div>
+
+                           <div class="text-end mb-3">
+    <a routerLink="/forgot-password">
+        Forgot Password?
+    </a>
+</div>
+
+                        </div>
+
+                        <button
+                            class="btn btn-primary w-100"
+                            type="submit"
+                            [disabled]="loading || !f.valid">
+
+                            {{ loading ? 'Logging in...' : 'Login' }}
+
+                        </button>
+
+                        <p class="text-center mt-4">
+
+                            Don't have an account?
+
+                            <a routerLink="/register">
+
+                                Register
+
+                            </a>
+
                         </p>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-    <div
-        class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-footer">
-        <!-- Copyright -->
-        <div class="text-white mb-3 mb-md-0">
-            Copyright © 2023. All rights reserved.
-        </div>
-        <!-- Copyright -->
 
-        <!-- Right -->
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <div
+        class="d-flex flex-column flex-md-row justify-content-between align-items-center py-4 px-4 bg-footer">
+
+        <div class="text-white">
+
+            © 2026 All Rights Reserved.
+
+        </div>
+
         <div>
-            <a href="#!" class="text-white me-4">
+
+            <a href="#" class="text-white me-4">
                 <i class="bi bi-facebook"></i>
             </a>
-            <a href="#!" class="text-white me-4">
+
+            <a href="#" class="text-white me-4">
                 <i class="bi bi-twitter"></i>
             </a>
-            <a href="#!" class="text-white me-4">
+
+            <a href="#" class="text-white me-4">
                 <i class="bi bi-google"></i>
             </a>
-            <a href="#!" class="text-white">
+
+            <a href="#" class="text-white">
                 <i class="bi bi-linkedin"></i>
             </a>
+
         </div>
-        <!-- Right -->
+
     </div>
+
 </div>

@@ -8,4 +8,5 @@ export class Order {
     shippingDetails: Shipping = new Shipping();
     items: ShoppingCardItem[] = [];
     amount?: number;
+    status?: string;
 }

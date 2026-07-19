@@ -1,7 +1,7 @@
 // src/app/services/order.service.ts
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
-
+import { updateDoc } from '@angular/fire/firestore';
 import {
   Firestore,
   collection,
@@ -34,7 +34,8 @@ export class OrderService {
   const newOrder = {
     ...order,
     userId: userId,
-    datePlaced: Date.now()
+    datePlaced: Date.now(),
+     status: 'Pending'
   };
     return addDoc(this.ordersRef, newOrder);
   }
@@ -65,4 +66,21 @@ export class OrderService {
       idField: 'id'
     }) as Observable<Order>;
   }
+  // CANCEL ORDER
+cancelOrder(orderId: string) {
+  const orderDoc = doc(this.firestore, `orders/${orderId}`);
+
+  return updateDoc(orderDoc, {
+    status: 'Cancelled'
+  });
+}
+updateOrderStatus(orderId: string, status: string) {
+
+  const orderDoc = doc(this.firestore, `orders/${orderId}`);
+
+  return updateDoc(orderDoc, {
+    status: status
+  });
+
+}
 }

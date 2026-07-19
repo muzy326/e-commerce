@@ -1,10 +1,12 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Order } from '../../models/order.model';
 import { OrderService } from '../../services/order.service';
+import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-my-orders',
@@ -26,23 +28,43 @@ export class MyOrdersComponent implements OnInit {
   pageSize = 4;
   myOrders: Order[] = [];
 
-  constructor(private orderService: OrderService) {}
+  constructor(private orderService: OrderService, private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadData();
   }
 
-  loadData(): void {
+loadData(): void {
 
-    // 🔴 Replace with real logged user id later
-    const userId = 'IvUTrIazqg2FRbpbexGM';
+  const userId = this.authService.loggedInUserId;
 
-    this.orderService.getUserOrders(userId).subscribe({
-      next: (orders: Order[]) => {
-        this.myOrders = orders;
-      },
-      error: (err) => console.error(err)
-    });
-
+  if (!userId) {
+    return;
   }
+
+  this.orderService.getUserOrders(userId).subscribe({
+    next: (orders: Order[]) => {
+      this.myOrders = orders;
+    },
+    error: (err) => console.error(err)
+  });
+
+}
+
+viewOrder(order: Order): void {
+
+  if (!order.id) {
+    return;
+  }
+
+  this.router.navigate(
+    ['/order-detail', order.id],
+    {
+      queryParams: {
+        viewFrom: 'user'
+      }
+    }
+  );
+
+}
 }

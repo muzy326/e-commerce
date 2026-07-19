@@ -10,6 +10,10 @@ import {
 import { Auth } from '@angular/fire/auth';
 import { from, map } from 'rxjs';
 import { User } from '../models/user.model';
+import {
+  doc,
+  updateDoc
+} from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -70,6 +74,37 @@ export class AuthService {
   get isAdmin(): boolean {
     return localStorage.getItem('isAdmin') === 'true';
   }
+  resetPassword(email: string, newPassword: string) {
+
+  const usersRef = collection(this.firestore, 'user');
+
+  const q = query(
+    usersRef,
+    where('email', '==', email)
+  );
+
+  return from(
+    getDocs(q).then(async snapshot => {
+
+      if (snapshot.empty) {
+        throw new Error('User not found');
+      }
+
+      const userDoc = snapshot.docs[0];
+
+      await updateDoc(
+        doc(this.firestore, 'user', userDoc.id),
+        {
+          password: newPassword
+        }
+      );
+
+      return true;
+
+    })
+  );
+
+}
 
   // 🚪 LOGOUT
   logout() {

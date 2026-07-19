@@ -1,55 +1,8 @@
-// import { Component, OnInit } from '@angular/core';
-// import { ActivatedRoute, Router } from '@angular/router';
-// import { CommonModule } from '@angular/common';
-// import { Observable } from 'rxjs';
-
-// import { Order } from '../../models/order.model';
-// import { OrderService } from '../../services/order.service';
-
-// @Component({
-//   selector: 'app-order-detail',
-//   standalone: true,
-//   imports: [CommonModule],
-//   templateUrl: './order-detail.component.html',
-//   styleUrls: ['./order-detail.component.css']
-// })
-// export class OrderDetailComponent implements OnInit {
-//   orderDetail: Order = new Order();
-
-//   constructor(
-//     private orderService: OrderService,
-//     private route: ActivatedRoute,
-//     private router: Router
-//   ) {}
-
-//   ngOnInit(): void {
-//     const id: string = this.route.snapshot.paramMap.get('id') ?? '';
-
-//     // Add explicit type to the subscription parameter
-//     this.orderService.getById(id).subscribe((order: Order) => {
-//       if (order) {
-//         this.orderDetail = order;
-//       } else {
-//         console.error('Order not found for id:', id);
-//       }
-//     });
-//   }
-
-//   redirectToOrdersPage(): void {
-//     const viewFrom: string | null = this.route.snapshot.queryParamMap.get('viewFrom');
-//     if (viewFrom === 'admin') {
-//       this.router.navigate(['/admin/orders']);
-//     } else {
-//       this.router.navigate(['/my-orders']);
-//     }
-//   }
-// }
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Order } from '../../models/order.model';
 import { OrderService } from '../../services/order.service';
 import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-order-detail',
@@ -58,38 +11,148 @@ import { Observable } from 'rxjs';
   styleUrls: ['./order-detail.component.css']
 })
 export class OrderDetailComponent implements OnInit {
-  
-   orderId!: string;
-  
+
+  orderId!: string;
+
   orderDetail: Order = new Order();
 
-  constructor(private orderService: OrderService, private route: ActivatedRoute, private router: Router) { }
+  loggedInUserId: string | null = localStorage.getItem('loggedInUserId');
+
+  isAdmin: boolean = localStorage.getItem('isAdmin') === 'true';
+
+
+  constructor(
+    private orderService: OrderService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
+
 
   ngOnInit(): void {
 
-     this.orderId = this.route.snapshot.paramMap.get('id')!;
+    this.orderId = this.route.snapshot.paramMap.get('id')!;
+
     this.loadOrder(this.orderId);
-    
-    }
-  
+
+  }
+
+
   loadOrder(id: string): void {
+
     this.orderService.getOrderById(id)
-    .subscribe({
-   next: (order: unknown) => {
-    this.orderDetail = order as Order;
-  },
-  error: err => console.error(err)
-});
+      .subscribe({
+
+       next: (order: Order | undefined) => {
+
+  if (!order) {
+
+    this.router.navigate(['/products']);
+    return;
+
   }
-  redirectToOrdersPage() {
-    let viewFrom = this.route.snapshot.queryParamMap.get('viewFrom');
-    if (viewFrom === 'admin') {
-      this.router.navigate(['/admin/orders']);
-    }
+
+  if (
+    this.isAdmin ||
+    order.userId === this.loggedInUserId
+  ) {
+
+    this.orderDetail = order;
+
+  } else {
+
+    this.router.navigate(['/products']);
+
+  }
+
+},
+
+
+        error: err => {
+
+          console.error(err);
+
+          this.router.navigate(['/products']);
+
+        }
+
+      });
+
+  }
+
+
+
+  cancelOrder(): void {
+
+
+    if (
+
+      this.orderDetail.userId === this.loggedInUserId &&
+      !this.isAdmin &&
+      this.orderDetail.status !== 'Cancelled'
+
+    ) {
+
+
+      this.orderService.cancelOrder(this.orderDetail.id!)
+
+        .then(() => {
+
+
+          this.orderDetail.status = 'Cancelled';
+
+
+          alert('Order cancelled successfully');
+
+
+        })
+
+        .catch(error => {
+
+          console.error(error);
+
+          alert('Unable to cancel order');
+
+        });
+
+
+    } 
     else {
-      this.router.navigate(['/my-orders']);
+
+
+      alert('You cannot cancel this order');
+
+
     }
+
+
   }
+
+
+
+
+  redirectToOrdersPage() {
+
+
+    let viewFrom = this.route.snapshot.queryParamMap.get('viewFrom');
+
+
+    if (viewFrom === 'admin') {
+
+
+      this.router.navigate(['/admin/orders']);
+
+
+    } 
+    else {
+
+
+      this.router.navigate(['/my-orders']);
+
+
+    }
+
+
+  }
+
 
 }
-

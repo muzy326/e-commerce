@@ -28,7 +28,14 @@
                                 <td>{{order.datePlaced | date:'short'}}</td>
                                 <td>{{order.amount | currency:'SAR':'symbol'}}</td>
                                 <td><a [queryParams]="{ viewFrom: 'user'}"
-                                        [routerLink]="['/order-detail', order.id]">View</a></td>
+                                        [routerLink]="['/order-detail', order.id]"><td>
+  <button
+    class="btn btn-sm btn-primary"
+    (click)="viewOrder(order)">
+    <i class="bi bi-eye"></i> View
+  </button>
+  
+</td></a></td>
                             </tr>
                             <tr>
                                 <td colspan="4">
